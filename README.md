@@ -2,7 +2,7 @@
 
 ## Daniel Oria Martín
 
-Implemented in node.js with express, mocha and chai.
+Implemented with node.js with express, mocha and chai.
 
 ## How to install
 
