@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title> Oria </title>
+    <link rel="FaviconIcon" href="favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="styles/indexMain.css">
+  </head>
+<body>
+  <header>
+    <ul>
+      <div id="name">
+        <li> Oria Martín <strong>Daniel</strong></li>
+      </div>
+      <div id="links">
+        <li><a href="index.html">Index</a></li>
+        <li><a href="Daniel-Oria-Martin-GoL.html">Game of Life</a></li>
+        <li><a href="./out/index.html">Documentation</a></li>
+        <li><a href="Daniel-Oria-Martin.test.html">Tests</a></li>
+        <li><a href="./coverage/index.html">Coverage</a></li>
+        <li><a href="Daniel-Oria-Martin-uml.html">UML</a></li>
+        <li><a href=""> Ejercicio </a></li>
+      </div>
+    </ul>
+  
+    <h1> Game of Life - Daniel Oria Martín </h1>
+    <div id="container">
+      <canvas id="myCanvasRight" width="1100" height="822"></canvas>
+      <canvas id="myCanvasLeft" width="500" height="300"></canvas>
+      <div id="buttons">
+        <label for="velocity">Número de células:</label>
+        <input type="text" id="cellNum" name="cellNum" value="1000" required><br><br>
+        <label for="velocity">Velocity</label><br><br>
+        <label for="fast">&larr;&emsp;Faster&emsp;&emsp;&emsp;&emsp;&emsp;Slower&emsp;&rarr;</label>
+        <div class="slidecontainer">
+          <input type="range" id="velocity" name="velocity" 
+            min="1" max="200" value="50" step="10" class="slider">
+        </div>
+        <br><br>
+        <input type="submit" onclick="mainStart()" value="Start">
+        <input type="submit" onclick="pause()" value="Pause"><br><br>
+        <input type="submit" onclick="end()" value="End">
+        <input type="submit" onclick="mainStep()" value="Step"><br><br>
+      </div>
+      <script src="cellClass.js"></script>
+      <script src="gridClass.js"></script>
+      <script src="gameOfLife.js"></script>
+    </div>
+  </header>
+
+  <footer>
+    <br>
+    <h4>Universidad de La Laguna</h4>
+    <p>Escuela Superior de Ingeniería y Tecnología</p>
+    <p>Programación de Aplicaciones Interactivas</p>
+    <br>
+  </footer>
+
+</body>
+
+</html>

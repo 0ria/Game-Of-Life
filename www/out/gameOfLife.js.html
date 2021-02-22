@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: gameOfLife.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: gameOfLife.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author Daniel Oria Martin
+ * @mail alu0101027340@ull.edu.es
+ * @date 09/05/2020
+ * GitHub User: 0ria
+ * Location: Escuela Superior Técnica de Ingenieria de La Laguna
+ * Subject: Programacion de Aplicaciones Interactivas
+ * Assignment: Práctica 12, Game of Life.
+ * Task: gameOfLife
+ * @brief programa principal de la tarea.
+ * References:  Tasks:
+ *              https://github.com/fsande/PAI-P12-Life/blob/master/2019-2020_p12_Life.md.
+ */
+'use strict';
+
+const CANVASRIGHT = document.getElementById('myCanvasRight');
+const CTXR = CANVASRIGHT.getContext('2d');
+const CANVASLEFT = document.getElementById('myCanvasLeft');
+const CTXL = CANVASLEFT.getContext('2d');
+const CANVASHEIGHT = parseInt(CANVASRIGHT.height, 10);
+const CANVASWIDTH = parseInt(CANVASRIGHT.width, 10);
+const BOXSIZE = CANVASRIGHT.width / 75;
+let firstTime = true;
+let timeToStop = false;
+let generation = 0;
+let velocity;
+let board;
+
+/**
+ * @description Función que printea la generación actual y la velocidad
+ */
+function showStats() {
+  CTXL.font = "20px Arial";
+  CTXL.clearRect(0, 0, CANVASLEFT.width, CANVASLEFT.height);
+  CTXL.fillText("Generation: " + generation, 343, 50);
+  CTXL.fillText("Current Velocity: " + velocity, 300, 70);
+}
+
+/**
+ * @description funcion que realiza un step suelto en caso de presionar
+ *     el boton step del html
+ */
+function mainStep() {
+  showStats();
+  if (firstTime) {
+    firstTime = false;
+    let INITIALNUMBER = parseInt(document.getElementById('cellNum').value, 10);
+    board = new Board(CANVASWIDTH, CANVASHEIGHT, BOXSIZE);
+    
+    board.createBoard();
+    board.drawBoard();
+    board.updateBoardAlives(INITIALNUMBER);
+    generation++;
+  }
+  else {
+    board.countNeighbours();
+    board.updateBoard();
+    generation++;
+  }
+}
+
+/**
+ * @description Función que pausa la ejecución
+ */
+function pause() {
+  timeToStop = true;
+}
+
+/**
+ * @description Función que lanza a ejectuar el algoritmo cuando el 
+ *     boton start es pulsado, tomando como entrada el número de 
+ *     células vivas y la velociad proporcionadas por el usuario
+ *     en el html 
+ *     
+ */
+async function mainStart() {
+  timeToStop = false;
+  while (!timeToStop) {
+    generation++;
+    showStats();
+    velocity = parseInt(document.getElementById('velocity').value, 10);
+    await sleep(velocity);
+    if (firstTime) {
+      firstTime = false;
+      let INITIALNUMBER = parseInt(document.getElementById('cellNum').value, 10);
+      board = new Board(CANVASWIDTH, CANVASHEIGHT, BOXSIZE);
+      
+      board.createBoard();
+      board.drawBoard();
+      board.updateBoardAlives(INITIALNUMBER);
+    }
+    else {
+      board.countNeighbours();
+      board.updateBoard();
+    }
+  }
+}
+
+/**
+ * @description Función que printea los stats finales 
+ */
+function showFinalStats() {
+  CTXL.font = "20px Arial";
+  CTXL.clearRect(0, 0, CANVASLEFT.width, CANVASLEFT.height);
+  CTXL.fillText("Last generation: " + generation, 300, 50);
+  CTXL.fillText("Ending Alive Cells: " + board.getAliveNumber(), 277, 70);
+}
+
+/**
+ * @description Función que resetea los cavnas
+ */
+function clear() {
+  generation = 0;
+  firstTime = true;
+  board.killAll();
+  CTXR.clearRect(0, 0, CANVASRIGHT.width, CANVASRIGHT .height);
+  CTXL.clearRect(0, 0, CANVASLEFT.width, CANVASLEFT.height);
+}
+
+/**
+ * @description Función que cuenta atrás para resetear el programa
+ */
+async function reset() {
+  CTXL.font = "20px Arial";
+  CTXL.fillText("Reseting Grid in:", 200, 90);
+  let helpNumber = 360;
+  for (let i = 3; i >= 0; i--) {
+    await sleep(1000);
+    CTXL.fillText(i, helpNumber , 90);
+    helpNumber += 20;
+  }
+  clear();
+}
+
+/**
+ * @description Función que es llamda al pulsar el boton end del html
+ *     y que pausa y resetea el programa
+ */
+function end() {
+  pause();
+  showFinalStats();
+  reset();
+}
+
+/**
+ *
+ * @param {Number} msToWait
+ * @description Función que hace que el programa espere el tiempo indicado
+ */
+function sleep(msToWait) {
+  return new Promise(resolve => setTimeout(resolve, msToWait));
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="Board.html">Board</a></li><li><a href="Cell.html">Cell</a></li></ul><h3>Global</h3><ul><li><a href="global.html#clear">clear</a></li><li><a href="global.html#end">end</a></li><li><a href="global.html#mainStart">mainStart</a></li><li><a href="global.html#mainStep">mainStep</a></li><li><a href="global.html#pause">pause</a></li><li><a href="global.html#reset">reset</a></li><li><a href="global.html#showFinalStats">showFinalStats</a></li><li><a href="global.html#showStats">showStats</a></li><li><a href="global.html#sleep">sleep</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Tue May 12 2020 13:19:19 GMT+0100 (WEST)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
